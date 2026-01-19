@@ -49,7 +49,6 @@ type WSClient struct {
 
 type subscriptionMsg struct {
 	Type     string   `json:"type"`
-	Channel  string   `json:"channel"`
 	Markets  []string `json:"markets,omitempty"`
 	AssetIDs []string `json:"assets_ids,omitempty"`
 	Auth     *authMsg `json:"auth,omitempty"`
@@ -69,7 +68,7 @@ func NewClient(channel string) (*WSClient, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	c := &WSClient{
-		baseURL:        BaseURL,
+		baseURL:        BaseURL + channel,
 		channel:        channel,
 		ctx:            ctx,
 		cancel:         cancel,
@@ -135,7 +134,6 @@ func (c *WSClient) Connect(auth *Auth, markets, assetIDs []string, customFeature
 
 	var subMsg subscriptionMsg
 	subMsg.Type = "subscribe"
-	subMsg.Channel = c.channel
 
 	switch c.channel {
 	case ChannelUser:
@@ -173,7 +171,6 @@ func (c *WSClient) Subscribe(markets, assetIDs []string) error {
 
 	msg := subscriptionMsg{
 		Type:     "subscribe",
-		Channel:  c.channel,
 		Markets:  markets,
 		AssetIDs: assetIDs,
 	}
@@ -191,7 +188,6 @@ func (c *WSClient) Unsubscribe(markets, assetIDs []string) error {
 
 	msg := subscriptionMsg{
 		Type:     "unsubscribe",
-		Channel:  c.channel,
 		Markets:  markets,
 		AssetIDs: assetIDs,
 	}
