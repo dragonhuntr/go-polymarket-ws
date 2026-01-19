@@ -36,8 +36,8 @@ type BookMessage struct {
 	BaseMessage
 	Timestamp string         `json:"timestamp"`
 	Hash      string         `json:"hash"`
-	Buys      []OrderSummary `json:"buys"`
-	Sells     []OrderSummary `json:"sells"`
+	Bids      []OrderSummary `json:"bids"`
+	Asks      []OrderSummary `json:"asks"`
 }
 
 type OrderSummary struct {
