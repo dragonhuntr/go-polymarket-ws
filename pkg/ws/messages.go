@@ -34,10 +34,10 @@ type OrderMessage struct {
 
 type BookMessage struct {
 	BaseMessage
-	Timestamp int64          `json:"timestamp"`
+	Timestamp string         `json:"timestamp"`
 	Hash      string         `json:"hash"`
-	Bids      []OrderSummary `json:"bids"`
-	Asks      []OrderSummary `json:"asks"`
+	Buys      []OrderSummary `json:"buys"`
+	Sells     []OrderSummary `json:"sells"`
 }
 
 type OrderSummary struct {
@@ -47,43 +47,75 @@ type OrderSummary struct {
 
 type PriceChangeMessage struct {
 	BaseMessage
-	Changes []PriceChange `json:"changes"`
+	PriceChanges []PriceChange `json:"price_changes"`
+	Timestamp    string        `json:"timestamp"`
 }
 
 type PriceChange struct {
-	TokenID string `json:"token_id"`
+	AssetID string `json:"asset_id"`
 	Price   string `json:"price"`
-}
-
-type TickSizeChangeMessage struct {
-	BaseMessage
-	TickSize string `json:"tick_size"`
-}
-
-type LastTradePriceMessage struct {
-	BaseMessage
-	Price     string `json:"price"`
-	Timestamp int64  `json:"timestamp"`
-}
-
-type BestBidAskMessage struct {
-	BaseMessage
+	Size    string `json:"size"`
+	Side    string `json:"side"`
+	Hash    string `json:"hash"`
 	BestBid string `json:"best_bid"`
 	BestAsk string `json:"best_ask"`
 }
 
+type TickSizeChangeMessage struct {
+	BaseMessage
+	OldTickSize string `json:"old_tick_size"`
+	NewTickSize string `json:"new_tick_size"`
+	Side        string `json:"side"`
+	Timestamp   string `json:"timestamp"`
+}
+
+type LastTradePriceMessage struct {
+	BaseMessage
+	Price      string `json:"price"`
+	Side       string `json:"side"`
+	Size       string `json:"size"`
+	FeeRateBps string `json:"fee_rate_bps"`
+	Timestamp  string `json:"timestamp"`
+}
+
+type BestBidAskMessage struct {
+	BaseMessage
+	BestBid   string `json:"best_bid"`
+	BestAsk   string `json:"best_ask"`
+	Spread    string `json:"spread"`
+	Timestamp string `json:"timestamp"`
+}
+
 type NewMarketMessage struct {
 	BaseMessage
-	MarketID string `json:"market_id"`
+	ID           string               `json:"id"`
+	Question     string               `json:"question"`
+	Slug         string               `json:"slug"`
+	Description  string               `json:"description"`
+	AssetsIDs    []string             `json:"assets_ids"`
+	Outcomes     []string             `json:"outcomes"`
+	EventMessage EventMessageMetadata `json:"event_message"`
+	Timestamp    string               `json:"timestamp"`
 }
 
 type MarketResolvedMessage struct {
 	BaseMessage
-	Outcome   string `json:"outcome"`
-	Timestamp int64  `json:"timestamp"`
+	ID             string               `json:"id"`
+	Question       string               `json:"question"`
+	Slug           string               `json:"slug"`
+	Description    string               `json:"description"`
+	AssetsIDs      []string             `json:"assets_ids"`
+	Outcomes       []string             `json:"outcomes"`
+	WinningAssetID string               `json:"winning_asset_id"`
+	WinningOutcome string               `json:"winning_outcome"`
+	EventMessage   EventMessageMetadata `json:"event_message"`
+	Timestamp      string               `json:"timestamp"`
 }
 
-type EventMessage struct {
-	BaseMessage
-	Data map[string]interface{} `json:"data,omitempty"`
+type EventMessageMetadata struct {
+	ID          string `json:"id"`
+	Ticker      string `json:"ticker"`
+	Slug        string `json:"slug"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
 }
