@@ -48,10 +48,11 @@ type WSClient struct {
 }
 
 type subscriptionMsg struct {
-	Type     string   `json:"type"`
-	Markets  []string `json:"markets,omitempty"`
-	AssetIDs []string `json:"assets_ids,omitempty"`
-	Auth     *authMsg `json:"auth,omitempty"`
+	Type           string   `json:"type"`
+	Markets        []string `json:"markets,omitempty"`
+	AssetIDs       []string `json:"assets_ids,omitempty"`
+	Auth           *authMsg `json:"auth,omitempty"`
+	CustomFeatures bool     `json:"custom_features_enabled,omitempty"`
 }
 
 type authMsg struct {
@@ -134,6 +135,7 @@ func (c *WSClient) Connect(auth *Auth, markets, assetIDs []string, customFeature
 
 	var subMsg subscriptionMsg
 	subMsg.Type = "subscribe"
+	subMsg.CustomFeatures = customFeatures
 
 	switch c.channel {
 	case ChannelUser:
