@@ -1,5 +1,41 @@
 package ws
 
+type EventType string
+
+// user events
+const (
+	EventTrade = "trade"
+	EventOrder = "order"
+)
+
+// market events
+const (
+	EventBook           = "book"
+	EventPriceChange    = "price_change"
+	EventTickSizeChange = "tick_size_change"
+
+	// custom features events (have to send custom_features_enabled=true)
+	EventLastTradePrice = "last_trade_price"
+	EventBestBidAsk     = "best_bid_ask"
+	EventNewMarket      = "new_market"
+	EventMarketResolved = "market_resolved"
+)
+
+type Auth struct {
+	APIKey     string `json:"apikey"`
+	Secret     string `json:"secret"`
+	Passphrase string `json:"passphrase"`
+}
+
+type subscriptionMessage struct {
+	Type           string   `json:"type,omitempty"`
+	Markets        []string `json:"markets,omitempty"`
+	AssetIDs       []string `json:"assets_ids,omitempty"`
+	Auth           Auth     `json:"auth,omitempty"`
+	Operation      string   `json:"operation,omitempty"`
+	CustomFeatures bool     `json:"custom_features_enabled,omitempty"`
+}
+
 type BaseMessage struct {
 	EventType string `json:"event_type"`
 	Market    string `json:"market,omitempty"`
